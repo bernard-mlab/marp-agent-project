@@ -1,0 +1,25 @@
+{
+  "name": "marp-agent-project",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "AI agent-driven Marp presentation builder",
+  "scripts": {
+    "dev": "marp -s ./slides -w --allow-local-files",
+    "build": "marp -I ./slides -o ./dist --allow-local-files",
+    "build:pdf": "marp -I ./slides -o ./dist --pdf --allow-local-files",
+    "build:pptx": "marp -I ./slides -o ./dist --pptx --allow-local-files",
+    "ingest": "node scripts/ingest.mjs",
+    "generate": "node scripts/generate.mjs"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "dotenv": "^16.4.5",
+    "googleapis": "^144.0.0",
+    "sharp": "^0.33.4",
+    "tinycolor2": "^1.6.0"
+  },
+  "devDependencies": {
+    "@marp-team/marp-cli": "^4.3.0"
+  }
+}

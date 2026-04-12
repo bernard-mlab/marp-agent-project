@@ -1,0 +1,240 @@
+/* @theme tech */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;700&display=swap');
+
+:root {
+  --color-bg: #0d1117;
+  --color-surface: #161b22;
+  --color-border: #30363d;
+  --color-text: #e6edf3;
+  --color-text-muted: #8b949e;
+  --color-accent: #58a6ff;
+  --color-accent-green: #3fb950;
+  --color-accent-orange: #d29922;
+  --color-accent-purple: #bc8cff;
+}
+
+section {
+  width: 1280px;
+  height: 720px;
+  padding: 48px 72px;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  font-size: 26px;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Grid lines background decoration */
+section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(88, 166, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(88, 166, 255, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* Headings */
+h1 {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin: 0 0 16px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+h1::before {
+  content: '> ';
+  color: var(--color-accent-green);
+  font-size: 0.75em;
+}
+
+h2 {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border);
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--color-accent-green);
+  margin: 0 0 16px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+h4, h5, h6 {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  margin: 0 0 12px;
+}
+
+/* Body content */
+p {
+  margin: 0 0 16px;
+}
+
+ul, ol {
+  margin: 0 0 16px;
+  padding-left: 32px;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+li::marker {
+  color: var(--color-accent);
+}
+
+/* Code */
+code {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.82em;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  color: var(--color-accent-purple);
+}
+
+pre {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 20px 24px;
+  overflow: auto;
+  position: relative;
+}
+
+pre::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff5f56;
+  box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27c93f;
+}
+
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.75em;
+  color: var(--color-text);
+  padding-top: 18px;
+  display: block;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82em;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+th {
+  background: var(--color-surface);
+  color: var(--color-accent);
+  padding: 10px 16px;
+  text-align: left;
+  font-weight: 700;
+  border-bottom: 1px solid var(--color-border);
+}
+
+td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Blockquote */
+blockquote {
+  border-left: 3px solid var(--color-accent);
+  margin: 0 0 16px;
+  padding: 8px 24px;
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  border-radius: 0 6px 6px 0;
+}
+
+/* Pagination */
+section::after {
+  content: attr(data-marpit-pagination) ' / ' attr(data-marpit-pagination-total);
+  position: absolute;
+  bottom: 24px;
+  right: 72px;
+  font-size: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--color-text-muted);
+}
+
+/* Header / Footer */
+header {
+  position: absolute;
+  top: 16px;
+  left: 72px;
+  right: 72px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.05em;
+}
+
+footer {
+  position: absolute;
+  bottom: 24px;
+  left: 72px;
+  font-size: 13px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--color-text-muted);
+}
+
+/* Lead variant — title & section slides */
+section.lead {
+  justify-content: center;
+  text-align: center;
+  background: var(--color-bg);
+}
+
+section.lead h1 {
+  font-size: 56px;
+  margin-bottom: 20px;
+}
+
+section.lead h1::before {
+  display: block;
+  font-size: 0.5em;
+  color: var(--color-accent-green);
+  margin-bottom: 8px;
+}
+
+section.lead h2 {
+  font-size: 28px;
+  color: var(--color-text-muted);
+  font-weight: 400;
+  border-bottom: none;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Invert variant — lighter surface */
+section.invert {
+  background: var(--color-surface);
+}
