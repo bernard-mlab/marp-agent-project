@@ -10,7 +10,8 @@
     "build:pdf": "marp -I ./slides -o ./dist --pdf --allow-local-files",
     "build:pptx": "marp -I ./slides -o ./dist --pptx --allow-local-files",
     "ingest": "node scripts/ingest.mjs",
-    "generate": "node scripts/generate.mjs"
+    "generate": "node scripts/generate.mjs",
+    "test": "node --test tests/**/*.test.mjs"
   },
   "dependencies": {
     "chalk": "^5.3.0",
