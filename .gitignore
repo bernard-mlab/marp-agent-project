@@ -6,3 +6,4 @@ assets/downloaded/
 
 service-account.json
 *.json.key
+.worktrees/
