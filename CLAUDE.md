@@ -20,6 +20,11 @@ assets/           Downloaded or user-provided images
 dist/             Build output (HTML, PDF, PPTX) — gitignored
 ```
 
+Current seeded content note:
+- `slides/` currently contains MarpX sample decks copied from `~/Desktop/Github/MarpX/examples`
+- Sample image/media assets are in `slides/assets/`
+- For compatibility with this repo's theme names, sample files using `theme: gödel` are normalized to `theme: godel`
+
 ---
 
 ## Three Agent Workflows

@@ -64,6 +64,14 @@ npm run ingest -- --url "https://docs.google.com/presentation/d/DECK_ID/edit" --
 
 Requires Google API credentials in `.env` — see [Google Slides API Setup](#google-slides-api-setup).
 
+### Use bundled MarpX sample decks
+
+This repository is currently seeded with MarpX sample decks in `slides/`.
+
+- Sample deck files: `slides/cantor.md`, `slides/church.md`, `slides/copernicus.md`, `slides/einstein.md`, `slides/frankfurt.md`, `slides/galileo.md`, `slides/gauss.md`, `slides/gropius.md`, `slides/gödel.md`, `slides/haskell.md`, `slides/hobbes.md`, `slides/howto.md`, `slides/lorca.md`, `slides/newton.md`, `slides/socrates.md`, `slides/sparta.md`
+- Sample assets: `slides/assets/`
+- Theme compatibility note: files that referenced `theme: gödel` were normalized to `theme: godel` to match this repo's built-in theme name.
+
 ---
 
 ## Workflows

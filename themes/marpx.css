@@ -1184,6 +1184,7 @@ div.callout {
 
 div.callout>h1 {
   position: relative;
+  top: 0;
   font-size: 18pt;
   font-weight: 700;
   padding: 0px 0px 8pt 0px;
