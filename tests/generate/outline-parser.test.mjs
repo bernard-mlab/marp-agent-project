@@ -34,3 +34,13 @@ test('Markdown headings classify TOC and References slides', () => {
   assert.ok(referencesSlide)
   assert.deepEqual(referencesSlide.bullets, ['[1] MarpX parser spec'])
 })
+
+test('JSON outline preserves backgroundImage slide field', () => {
+  const slides = parseOutline(JSON.stringify([
+    { type: 'title', title: 'Deck' },
+    { type: 'image', title: 'Visual', backgroundImage: './assets/visual.png' },
+  ]))
+
+  const imageSlide = slides.find(s => s.type === 'image')
+  assert.equal(imageSlide.backgroundImage, './assets/visual.png')
+})

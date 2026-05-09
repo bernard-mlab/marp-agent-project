@@ -15,14 +15,15 @@ import { renderSlide } from './slide-templates.mjs'
  * Build the Marp frontmatter block.
  */
 function buildFrontmatter({ theme, paginate = true, header = '', footer = '' }) {
+  const escapeFrontmatterString = value => value.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
   const lines = [
     '---',
     'marp: true',
     `theme: ${theme}`,
     `paginate: ${paginate}`,
   ]
-  if (header) lines.push(`header: "${header}"`)
-  if (footer) lines.push(`footer: "${footer}"`)
+  if (header) lines.push(`header: "${escapeFrontmatterString(header)}"`)
+  if (footer) lines.push(`footer: "${escapeFrontmatterString(footer)}"`)
   lines.push('---')
   return lines.join('\n')
 }
@@ -54,12 +55,37 @@ export function generatePresentation({
 }) {
   let slidePlan
 
+  const mapExtractedLayoutToType = layout => {
+    switch (layout) {
+      case 'title':
+      case 'title-academic':
+        return 'title'
+      case 'section':
+      case 'chapter':
+        return 'section'
+      case 'toc':
+        return 'toc'
+      case 'references':
+        return 'references'
+      case 'quote':
+        return 'quote'
+      case 'image':
+        return 'image'
+      case 'two-column':
+      case 'multicolumn':
+        return 'two-column'
+      case 'closing':
+      case 'end':
+        return 'closing'
+      default:
+        return 'content'
+    }
+  }
+
   if (extracted) {
     // Convert ingested slides into a slide plan
     slidePlan = extracted.slides.map(s => ({
-      type: s.layout === 'title' ? 'title'
-          : s.layout === 'section' ? 'section'
-          : 'content',
+      type: mapExtractedLayoutToType(s.layout),
       title: s.title || '(Untitled)',
       subtitle: s.index === 0 ? s.body : undefined,
       bullets: s.index !== 0 && s.body
@@ -79,7 +105,7 @@ export function generatePresentation({
 
   const frontmatter = buildFrontmatter({ theme, header, footer })
   const slides = slidePlan.map(renderSlide)
-  const markdown = [frontmatter, ...slides].join('\n\n---\n\n')
+  const markdown = `${frontmatter}\n\n${slides.join('\n\n---\n\n')}`
 
   const slidesDir = PATHS.slides
   if (!existsSync(slidesDir)) mkdirSync(slidesDir, { recursive: true })

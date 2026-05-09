@@ -33,8 +33,28 @@ export const GOOGLE = {
 }
 
 export const MARP = {
-  themes: ['corporate', 'tech', 'minimal'],
-  defaultTheme: 'corporate',
+  themes: [
+    'marpx',
+    'godel',
+    'socrates',
+    'sparta',
+    'cantor',
+    'church',
+    'copernicus',
+    'corporate',
+    'einstein',
+    'frankfurt',
+    'galileo',
+    'gauss',
+    'gropius',
+    'haskell',
+    'hobbes',
+    'lorca',
+    'minimal',
+    'newton',
+    'tech',
+  ],
+  defaultTheme: 'godel',
   slideWidth: 1280,
   slideHeight: 720,
 }

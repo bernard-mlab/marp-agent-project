@@ -9,7 +9,7 @@
  *   - Markdown-style bullets (-, *, 1.)
  *   - JSON array of { type, title, body, bullets } objects
  *
- * @typedef {'title'|'section'|'content'|'two-column'|'image'|'closing'} SlideType
+ * @typedef {'title'|'section'|'content'|'two-column'|'image'|'quote'|'toc'|'references'|'closing'} SlideType
  *
  * @typedef {Object} SlidePlan
  * @property {SlideType} type
@@ -19,7 +19,9 @@
  * @property {string} [body]
  * @property {string} [left]
  * @property {string} [right]
- * @property {string} [imageUrl]
+ * @property {string} [backgroundImage]
+ * @property {string} [imageUrl] Legacy alias for backgroundImage
+ * @property {string} [imageLeft] Legacy alias for backgroundImage on two-column slides
  * @property {string} [notes]
  */
 
@@ -63,6 +65,19 @@ export function parseOutline(raw, { title = '', subtitle = '' } = {}) {
   let currentSlide = null
   let bulletBuffer = []
 
+  function headingToSlideType(headingText) {
+    const normalized = headingText.trim().toLowerCase()
+
+    if (/^(table of contents|contents|agenda|toc)$/.test(normalized)) {
+      return 'toc'
+    }
+    if (/^(references|reference|bibliography|sources|works cited)$/.test(normalized)) {
+      return 'references'
+    }
+
+    return 'content'
+  }
+
   function flushCurrent() {
     if (!currentSlide) return
     if (bulletBuffer.length > 0) {
@@ -80,7 +95,7 @@ export function parseOutline(raw, { title = '', subtitle = '' } = {}) {
     const isH2 = /^##\s+/.test(line)
     const isSection = /^(section|part|chapter):?\s+/i.test(line)
 
-    if (i === 0 && !isH1 && !isH2) continue // skip first line — used as title
+    if (i === 0 && (isH1 || (!isH1 && !isH2))) continue // first line used as title
 
     if (isH1 || isSection) {
       flushCurrent()
@@ -92,7 +107,7 @@ export function parseOutline(raw, { title = '', subtitle = '' } = {}) {
     if (isH2) {
       flushCurrent()
       const slideTitle = line.replace(/^#+\s+/, '')
-      currentSlide = { type: 'content', title: slideTitle, bullets: [] }
+      currentSlide = { type: headingToSlideType(slideTitle), title: slideTitle, bullets: [] }
       continue
     }
 

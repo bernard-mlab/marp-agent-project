@@ -10,9 +10,27 @@
  */
 
 import { parseArgs } from 'util'
-import { resolve, extname } from 'path'
+import { resolve } from 'path'
 import { readFileSync, existsSync } from 'fs'
 import chalk from 'chalk'
+import { MARP } from '../src/utils/config.mjs'
+
+/**
+ * Resolve and validate the requested theme name.
+ */
+function resolveTheme({ themeArg, templateArg, availableThemes, defaultTheme }) {
+  const theme = themeArg ?? templateArg ?? defaultTheme
+  const isBuiltIn = availableThemes.includes(theme)
+  const isCustom = /^custom-.+/.test(theme)
+
+  if (isBuiltIn || isCustom) {
+    return { theme }
+  }
+
+  const flag = themeArg ? '--theme' : '--template'
+  const available = `${availableThemes.join(', ')} or custom-<name>`
+  return { error: `Unknown ${flag} "${theme}". Use one of: ${available}` }
+}
 
 const { values: args } = parseArgs({
   options: {
@@ -42,7 +60,7 @@ ${chalk.bold('Usage:')}
 ${chalk.bold('Options:')}
   --topic      Presentation title / one-line topic
   --outline    Path to a text or markdown outline file
-  --template   Built-in template: corporate | tech | minimal (default: corporate)
+  --template   Built-in template (${MARP.themes.join(' | ')}) (default: ${MARP.defaultTheme})
   --theme      Custom theme name (overrides --template)
   --subtitle   Subtitle for title slide
   --header     Header text shown on all slides
@@ -56,12 +74,18 @@ ${chalk.bold('Options:')}
 console.log(chalk.bold.cyan('\n  marp-agent › generate\n'))
 
 // Resolve theme
-const theme = args.theme ?? args.template ?? 'corporate'
-const VALID_THEMES = ['corporate', 'tech', 'minimal']
-if (!args.theme && !VALID_THEMES.includes(theme)) {
-  console.error(chalk.red(`  Unknown template "${theme}". Use: ${VALID_THEMES.join(', ')}`))
+const resolvedTheme = resolveTheme({
+  themeArg: args.theme,
+  templateArg: args.template,
+  availableThemes: MARP.themes,
+  defaultTheme: MARP.defaultTheme,
+})
+
+if ('error' in resolvedTheme) {
+  console.error(chalk.red(`  ${resolvedTheme.error}`))
   process.exit(1)
 }
+const theme = resolvedTheme.theme
 
 // Read outline file if provided
 let outline = ''

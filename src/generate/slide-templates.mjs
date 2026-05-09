@@ -9,7 +9,7 @@
 
 export function titleSlide({ title, subtitle = '', backgroundImage = null }) {
   const bg = backgroundImage ? `\n![bg](${backgroundImage})` : ''
-  return `<!-- _class: lead -->
+  return `<!-- _class: title-academic lead -->
 <!-- _paginate: skip -->
 ${bg}
 # ${title}
@@ -19,7 +19,7 @@ ${subtitle ? `\n## ${subtitle}` : ''}`.trim()
 // ── Section header ────────────────────────────────────────────────────────────
 
 export function sectionSlide({ title, subtitle = '' }) {
-  return `<!-- _class: lead invert -->
+  return `<!-- _class: chapter lead invert -->
 <!-- _paginate: skip -->
 
 # ${title}
@@ -42,12 +42,13 @@ ${bulletLines}${bodyLine}${noteBlock}`.trim()
 
 // ── Two-column slide ──────────────────────────────────────────────────────────
 
-export function twoColumnSlide({ title, left = '', right = '', imageLeft = null }) {
-  if (imageLeft) {
+export function twoColumnSlide({ title, left = '', right = '', backgroundImage = null, imageLeft = null }) {
+  const image = backgroundImage || imageLeft
+  if (image) {
     // Image left, text right
     return `## ${title}
 
-![bg left:45%](${imageLeft})
+![bg left:45%](${image})
 
 ${right || left}`.trim()
   }
@@ -71,10 +72,11 @@ ${right}
 
 // ── Image slide ───────────────────────────────────────────────────────────────
 
-export function imageSlide({ title, imageUrl, caption = '' }) {
+export function imageSlide({ title, backgroundImage = null, imageUrl = null, caption = '' }) {
+  const image = backgroundImage || imageUrl
   return `<!-- _class: lead -->
 
-![bg cover](${imageUrl})
+![bg cover](${image})
 
 <div style="background:rgba(0,0,0,0.55);padding:24px 40px;border-radius:8px">
 
@@ -87,11 +89,40 @@ ${caption ? `\n${caption}` : ''}
 // ── Quote slide ───────────────────────────────────────────────────────────────
 
 export function quoteSlide({ quote, attribution = '', context = '' }) {
-  return `<!-- _class: lead -->
+  return `<!-- _class: quote -->
 
 > ${quote}
 ${attribution ? `>\n> — *${attribution}*` : ''}
 ${context ? `\n${context}` : ''}`.trim()
+}
+
+// ── TOC slide ───────────────────────────────────────────────────────────────
+
+export function tocSlide({ title = 'Contents', bullets = [] }) {
+  const bulletLines = bullets.length
+    ? bullets.map(b => `- ${b}`).join('\n')
+    : ''
+
+  return `<!-- _class: toc -->
+
+## ${title}
+
+${bulletLines}`.trim()
+}
+
+// ── References slide ────────────────────────────────────────────────────────
+
+export function referencesSlide({ title = 'References', bullets = [], body = '' }) {
+  const bulletLines = bullets.length
+    ? bullets.map(b => `- ${b}`).join('\n')
+    : ''
+  const bodyLine = body ? `\n${body}` : ''
+
+  return `<!-- _class: references -->
+
+## ${title}
+
+${bulletLines}${bodyLine}`.trim()
 }
 
 // ── Closing slide ─────────────────────────────────────────────────────────────
@@ -99,7 +130,7 @@ ${context ? `\n${context}` : ''}`.trim()
 export function closingSlide({ title = 'Thank You', contact = '', website = '' }) {
   const contactLine = contact ? `\n\n## ${contact}` : ''
   const websiteLine = website ? `\n${website}` : ''
-  return `<!-- _class: lead -->
+  return `<!-- _class: end lead -->
 <!-- _paginate: skip -->
 
 # ${title}
@@ -122,6 +153,8 @@ export function renderSlide(slide) {
     case 'two-column': return twoColumnSlide(slide)
     case 'image':    return imageSlide(slide)
     case 'quote':    return quoteSlide(slide)
+    case 'toc':      return tocSlide(slide)
+    case 'references': return referencesSlide(slide)
     case 'closing':  return closingSlide(slide)
     default:         return contentSlide(slide)
   }
