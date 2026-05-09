@@ -117,7 +117,7 @@ npm run generate -- --topic "Platform Overview" --template godel --subtitle "v2.
 npm run generate -- --outline ./my-outline.txt --theme custom-acme-brand
 
 # Custom output path
-npm run generate -- --topic "Annual Review" --output slides/fy2026-review.md
+npm run generate -- --topic "Annual Review" --output fy2026-review
 ```
 
 **Output:** `slides/<topic-slug>.md`
