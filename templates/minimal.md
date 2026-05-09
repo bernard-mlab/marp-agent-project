@@ -4,7 +4,7 @@ theme: minimal
 paginate: true
 ---
 
-<!-- _class: lead -->
+<!-- _class: title-academic -->
 <!-- _paginate: skip -->
 
 # A Clear, Simple Title
@@ -82,7 +82,7 @@ The single sentence that captures everything.
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: end -->
 <!-- _paginate: skip -->
 
 # Let's Talk

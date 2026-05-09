@@ -7,7 +7,7 @@ header: "ACME Corp"
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: title-academic -->
 <!-- _paginate: skip -->
 
 # Q4 Business Review
@@ -16,7 +16,7 @@ header: "ACME Corp"
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: end -->
 <!-- _paginate: skip -->
 
 # Thank You

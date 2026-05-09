@@ -6,7 +6,7 @@ header: "Opencode vs Claude Code"
 footer: "2026 — Developer Tools Showdown"
 ---
 
-<!-- _class: lead -->
+<!-- _class: title-academic -->
 <!-- _paginate: skip -->
 <!-- _header: "" -->
 <!-- _footer: "" -->
@@ -53,7 +53,7 @@ opencode
 
 ---
 
-<!-- _class: lead invert -->
+<!-- _class: chapter -->
 <!-- _paginate: skip -->
 
 # Five Reasons Opencode Wins
@@ -256,7 +256,7 @@ Your MCP servers keep working.
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: end -->
 <!-- _paginate: skip -->
 <!-- _header: "" -->
 <!-- _footer: "" -->

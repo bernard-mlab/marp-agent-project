@@ -6,7 +6,7 @@ header: "Company Name"
 footer: "Confidential — 2026"
 ---
 
-<!-- _class: lead -->
+<!-- _class: title-academic -->
 <!-- _paginate: skip -->
 
 # Presentation Title
@@ -15,7 +15,7 @@ footer: "Confidential — 2026"
 
 ---
 
-<!-- _class: lead invert -->
+<!-- _class: chapter -->
 <!-- _paginate: skip -->
 
 # Section One
@@ -71,7 +71,7 @@ Supporting context or commentary beneath the quote.
 
 ---
 
-<!-- _class: lead invert -->
+<!-- _class: chapter -->
 <!-- _paginate: skip -->
 
 # Section Two
@@ -89,7 +89,7 @@ with your actual presentation content.
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: end -->
 <!-- _paginate: skip -->
 
 # Thank You

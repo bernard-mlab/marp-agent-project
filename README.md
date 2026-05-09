@@ -8,14 +8,15 @@ AI agent-driven Marp presentation builder. Generate polished slide decks from a 
 
 - **Ingest** an existing Google Slides deck or PPTX file and extract its color palette, fonts, and layout into a custom Marp CSS theme
 - **Generate** a complete presentation from a topic description or structured outline, using a built-in or custom theme
-- **Author** Marp markdown slides directly with three ready-to-use themes and a live preview server
+- **Author** Marp markdown slides directly with a built-in MarpX theme family and a live preview server
 
 ---
 
 ## Prerequisites
 
-- **Node.js 18+** and **npm**
+- **Node.js 18-25** and **npm** (`@marp-team/marp-cli` currently fails under Node 26 in this project)
 - No global installs required — Marp CLI is included as a dev dependency
+- Standalone setup — MarpX themes are shipped in this repo (no separate MarpX repository dependency)
 
 ---
 
@@ -110,7 +111,7 @@ Create a presentation from a topic description or a structured outline file.
 npm run generate -- --topic "Platform Overview"
 
 # With template and metadata
-npm run generate -- --topic "Platform Overview" --template tech --subtitle "v2.0" --header "Acme" --footer "Confidential"
+npm run generate -- --topic "Platform Overview" --template godel --subtitle "v2.0" --header "Acme" --footer "Confidential"
 
 # From an outline file
 npm run generate -- --outline ./my-outline.txt --theme custom-acme-brand
@@ -127,7 +128,7 @@ npm run generate -- --topic "Annual Review" --output slides/fy2026-review.md
 |------|-------------|
 | `--topic <text>` | Presentation topic (used as title) |
 | `--outline <path>` | Path to outline file (`.txt`, `.md`, or `.json`) |
-| `--template <name>` | Built-in template: `corporate`, `tech`, or `minimal` |
+| `--template <name>` | Built-in template/theme (default: `godel`) |
 | `--theme <name>` | Theme name to use (overrides template default) |
 | `--subtitle <text>` | Subtitle for the title slide |
 | `--header <text>` | Header text on all slides |
@@ -153,8 +154,10 @@ JSON array:
 ```json
 [
   { "type": "title", "title": "My Talk", "subtitle": "2026" },
+  { "type": "toc", "title": "Agenda", "bullets": ["Part 1", "Part 2"] },
   { "type": "section", "title": "Part 1" },
   { "type": "content", "title": "Key Points", "bullets": ["A", "B", "C"] },
+  { "type": "references", "title": "References", "bullets": ["[1] Source"] },
   { "type": "closing", "title": "Thank You", "contact": "name@email.com" }
 ]
 ```
@@ -174,11 +177,14 @@ Write or edit `.md` files in `slides/` directly using Marp syntax.
 
 ## Built-in Themes
 
-| Theme | Style | Best For |
-|-------|-------|----------|
-| `corporate` | Navy & gold, Merriweather / Open Sans | Business, finance, formal decks |
-| `tech` | Dark background, blue accent, JetBrains Mono | Engineering talks, dev demos |
-| `minimal` | Clean white, sans-serif | Education, content-focused slides |
+Default theme is `godel`.
+
+Core themes:
+- `marpx`, `godel`, `socrates`, `sparta`, `cantor`, `church`, `copernicus`, `einstein`
+- `frankfurt`, `galileo`, `gauss`, `gropius`, `haskell`, `hobbes`, `lorca`, `newton`
+
+Legacy compatibility themes:
+- `corporate`, `tech`, `minimal`
 
 Custom themes from ingest are saved as `themes/custom-<name>.css` and can be hand-edited after generation.
 
@@ -226,7 +232,7 @@ Only needed if you want to ingest directly from a Google Slides URL. For PPTX fi
 ```yaml
 ---
 marp: true
-theme: corporate          # corporate | tech | minimal | custom-<name>
+theme: godel              # default: godel; also socrates/sparta/... or custom-<name>
 paginate: true
 header: "Header text"
 footer: "Footer text"
@@ -245,6 +251,11 @@ footer: "Footer text"
 <!-- _class: lead -->           # Centered title layout
 <!-- _class: lead invert -->    # Centered + dark background
 <!-- _class: invert -->         # Dark background only
+<!-- _class: title-academic --> # MarpX title slide
+<!-- _class: chapter -->        # MarpX section/chapter divider
+<!-- _class: toc -->            # MarpX table-of-contents slide
+<!-- _class: references -->     # MarpX references slide
+<!-- _class: end -->            # MarpX closing slide
 <!-- _paginate: skip -->        # Hide page number on this slide
 <!-- _backgroundColor: #f0f4fa -->
 <!-- _color: #333 -->
@@ -281,9 +292,9 @@ Not visible on the slide.
 
 ### Common Patterns
 
-**Title slide:**
+**Title slide (MarpX):**
 ```markdown
-<!-- _class: lead -->
+<!-- _class: title-academic -->
 <!-- _paginate: skip -->
 
 # Presentation Title
@@ -291,12 +302,21 @@ Not visible on the slide.
 ## Subtitle
 ```
 
-**Section divider:**
+**Section divider (MarpX):**
 ```markdown
-<!-- _class: lead invert -->
+<!-- _class: chapter -->
 <!-- _paginate: skip -->
 
 # Section Name
+```
+
+**References slide (MarpX):**
+```markdown
+<!-- _class: references -->
+
+## References
+- [1] Primary source
+- [2] Secondary source
 ```
 
 **Two-column with image:**
@@ -321,8 +341,8 @@ src/
   generate/       outline-parser, slide-templates, presentation orchestrator
   themes/         palette.mjs (color utils), generator.mjs (CSS output)
   utils/          config.mjs (env/paths), image-handler.mjs
-themes/           CSS theme files — corporate, tech, minimal + generated custom-*
-templates/        Scaffold .md files for each built-in theme
+themes/           CSS theme files — MarpX core (`marpx`, named themes), legacy compatibility, generated custom-*
+templates/        Scaffold .md files (`<name>.md` built-ins, `marpx-<name>.md` comprehensive MarpX references)
 slides/           Working directory — all active presentations live here
 assets/           Downloaded or user-provided images
 dist/             Build output (HTML, PDF, PPTX) — gitignored
@@ -336,4 +356,4 @@ dist/             Build output (HTML, PDF, PPTX) — gitignored
 2. Copy the structure from `themes/corporate.css` as a starting point
 3. Define: `section`, `section.lead`, `section.invert`, `section::after`, `header`, `footer`
 4. Add the theme name to `MARP.themes` in `src/utils/config.mjs`
-5. Create a matching scaffold in `templates/<name>.md`
+5. Create a matching scaffold in `templates/<name>.md` (or `templates/marpx-<name>.md` for a comprehensive MarpX reference scaffold)

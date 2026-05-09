@@ -6,7 +6,7 @@ header: "project-name v1.0"
 footer: "© 2026"
 ---
 
-<!-- _class: lead -->
+<!-- _class: title-academic -->
 <!-- _paginate: skip -->
 
 # System Title
@@ -69,7 +69,7 @@ Brief description of the challenge being solved.
 
 ---
 
-<!-- _class: lead invert -->
+<!-- _class: chapter -->
 <!-- _paginate: skip -->
 
 # Demo
@@ -91,7 +91,7 @@ Q4 ░░░░░░░░░░ GA release
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: end -->
 <!-- _paginate: skip -->
 
 # Questions?

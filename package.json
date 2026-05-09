@@ -4,7 +4,15 @@
   "type": "module",
   "private": true,
   "description": "AI agent-driven Marp presentation builder",
+  "engines": {
+    "node": ">=18 <26"
+  },
   "scripts": {
+    "check:node": "node -e \"const v=process.versions.node.split('.').map(Number); const major=v[0]; if(major<18||major>=26){console.error('Unsupported Node.js version for Marp CLI in this project. Use Node >=18 and <26. Current: '+process.versions.node); process.exit(1)}\"",
+    "predev": "npm run check:node",
+    "prebuild": "npm run check:node",
+    "prebuild:pdf": "npm run check:node",
+    "prebuild:pptx": "npm run check:node",
     "dev": "marp -s ./slides -w --allow-local-files",
     "build": "marp -I ./slides -o ./dist --allow-local-files",
     "build:pdf": "marp -I ./slides -o ./dist --pdf --allow-local-files",

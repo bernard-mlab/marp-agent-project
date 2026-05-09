@@ -13,8 +13,8 @@ src/ingest/       Extraction: google-slides, pptx-parser, style-extractor
 src/themes/       palette.mjs (color utils), generator.mjs (CSS output)
 src/generate/     outline-parser, slide-templates, presentation orchestrator
 src/utils/        config.mjs (env/paths), image-handler.mjs
-themes/           CSS theme files — corporate, tech, minimal + any generated
-templates/        Scaffold .md files for each built-in theme
+themes/           CSS theme files — MarpX core (`marpx`, named themes), legacy compatibility, and generated custom-*
+templates/        Built-in scaffolds (`<name>.md`) + comprehensive MarpX references (`marpx-<name>.md`)
 slides/           Working directory — all active presentations live here
 assets/           Downloaded or user-provided images
 dist/             Build output (HTML, PDF, PPTX) — gitignored
@@ -52,11 +52,11 @@ Use when the user provides a topic, outline, or bullet list.
 
 **Steps:**
 1. Clarify: topic only, or a detailed outline?
-2. Choose a template: `corporate` | `tech` | `minimal` (or a custom theme from Workflow A)
+2. Choose a template/theme: default `godel`, or any built-in MarpX theme (or a custom theme from Workflow A)
 3. Run generate:
    ```
    npm run generate -- --topic "Product Launch 2026"
-   npm run generate -- --topic "Platform Overview" --template tech
+   npm run generate -- --topic "Platform Overview" --template godel
    npm run generate -- --outline ./my-outline.txt --theme custom-my-company
    npm run generate -- --topic "Annual Review" --subtitle "FY2026" --header "ACME" --footer "Confidential"
    ```
@@ -83,11 +83,30 @@ Or JSON:
 ```json
 [
   { "type": "title", "title": "My Talk", "subtitle": "2026" },
+  { "type": "toc", "title": "Agenda", "bullets": ["Part 1", "Part 2"] },
   { "type": "section", "title": "Part 1" },
   { "type": "content", "title": "Key Points", "bullets": ["A", "B", "C"] },
+  { "type": "references", "title": "References", "bullets": ["[1] Source"] },
   { "type": "closing", "title": "Thank You", "contact": "name@email.com" }
 ]
 ```
+
+---
+
+## Built-in Themes
+
+Default theme is `godel`.
+
+Core MarpX themes:
+- `marpx`, `godel`, `socrates`, `sparta`, `cantor`, `church`, `copernicus`, `einstein`
+- `frankfurt`, `galileo`, `gauss`, `gropius`, `haskell`, `hobbes`, `lorca`, `newton`
+
+Legacy compatibility themes:
+- `corporate`, `tech`, `minimal`
+
+Template note:
+- Core built-in scaffolds use `templates/<name>.md` (including `templates/marpx.md` if you add a dedicated marpx-base scaffold)
+- Comprehensive MarpX reference scaffolds use `templates/marpx-<name>.md`
 
 ---
 
@@ -96,13 +115,15 @@ Or JSON:
 Use when the user wants to write or edit slides directly.
 
 1. Create or edit a `.md` file in `slides/` using the Marp syntax below
-2. Set the theme in front matter: `theme: corporate` (or `tech`, `minimal`, or a custom name)
+2. Set the theme in front matter: `theme: godel` (or any MarpX theme like `socrates`, `sparta`, etc.; legacy `corporate|tech|minimal`; or `custom-<name>`)
 3. Run `npm run dev` for live preview
 4. Run `npm run build` / `npm run build:pdf` for output
 
 ---
 
 ## Build Commands
+
+Supported runtime: Node.js `>=18 <26` (Marp CLI build commands are not compatible with Node 26 in this project).
 
 | Command | What it does |
 |---------|-------------|
@@ -122,7 +143,7 @@ Use when the user wants to write or edit slides directly.
 ```yaml
 ---
 marp: true
-theme: corporate          # corporate | tech | minimal | custom-<name>
+theme: godel              # default: godel; also socrates/sparta/... or custom-<name>
 paginate: true
 header: "Header text"
 footer: "Footer text"
@@ -141,6 +162,11 @@ Place in an HTML comment immediately after `---`:
 <!-- _class: lead -->          # centered title layout
 <!-- _class: lead invert -->   # centered + dark background
 <!-- _class: invert -->        # dark background only
+<!-- _class: title-academic --> # MarpX title slide
+<!-- _class: chapter -->        # MarpX section/chapter divider
+<!-- _class: toc -->            # MarpX table-of-contents slide
+<!-- _class: references -->     # MarpX references slide
+<!-- _class: end -->            # MarpX closing slide
 <!-- _paginate: skip -->       # hide page number on this slide
 <!-- _backgroundColor: #f0f4fa -->  # override background
 <!-- _color: #333 -->               # override text color
@@ -188,9 +214,9 @@ Can span multiple lines.
 
 ### Common Slide Patterns
 
-**Title slide:**
+**Title slide (MarpX):**
 ```markdown
-<!-- _class: lead -->
+<!-- _class: title-academic -->
 <!-- _paginate: skip -->
 
 # Presentation Title
@@ -198,12 +224,21 @@ Can span multiple lines.
 ## Subtitle
 ```
 
-**Section divider:**
+**Section divider (MarpX):**
 ```markdown
-<!-- _class: lead invert -->
+<!-- _class: chapter -->
 <!-- _paginate: skip -->
 
 # Section Name
+```
+
+**References slide (MarpX):**
+```markdown
+<!-- _class: references -->
+
+## References
+- [1] Primary source
+- [2] Secondary source
 ```
 
 **Two-column with image:**
@@ -245,6 +280,8 @@ Key selectors to modify:
 Generated themes (`themes/custom-*.css`) are created by the ingest pipeline.
 You can manually edit these CSS files to fine-tune after generation.
 
+MarpX is standalone in this repo: built-in MarpX themes and templates do not require cloning a separate MarpX repository.
+
 ---
 
 ## Auth Setup (Google Slides API)
@@ -270,7 +307,7 @@ You can manually edit these CSS files to fine-tune after generation.
 2. Copy the structure from `themes/corporate.css` as a starting point
 3. Ensure you define: `section`, `section.lead`, `section.invert`, `section::after`, `header`, `footer`
 4. Add the theme name to `MARP.themes` array in `src/utils/config.mjs`
-5. Create a matching scaffold in `templates/<name>.md`
+5. Create a matching scaffold in `templates/<name>.md` (or `templates/marpx-<name>.md` for a comprehensive MarpX reference scaffold)
 
 ---
 

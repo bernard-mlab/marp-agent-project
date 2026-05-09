@@ -6,7 +6,7 @@ header: "Data Science Bootcamp"
 footer: "Linear Regression · Module 3"
 ---
 
-<!-- _class: lead -->
+<!-- _class: title-academic -->
 <!-- _paginate: skip -->
 <!-- _header: "" -->
 <!-- _footer: "" -->
@@ -300,7 +300,7 @@ R² = 1.0   →  Perfect fit             (usually means overfitting!)
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: chapter -->
 <!-- _paginate: skip -->
 <!-- _header: "" -->
 <!-- _footer: "" -->
